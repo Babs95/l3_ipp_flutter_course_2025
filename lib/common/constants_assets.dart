@@ -1,6 +1,8 @@
 const String kAssetsImages = 'assets/images/';
 
 // Images
+const String kAppLogo = "${kAssetsImages}logo.png";
+
 const String kImage1 = "${kAssetsImages}image1.jpg";
 const String kImage2 = "${kAssetsImages}image2.jpg";
 const String kImage3 = "${kAssetsImages}image3.jpg";
