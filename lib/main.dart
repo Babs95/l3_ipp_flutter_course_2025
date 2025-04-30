@@ -12,10 +12,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Image(
-        image: NetworkImage("https://i.ibb.co/fYj3CHLb/pexels-stijn-dijkstra-1306815-16014493.jpg"),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      textDirection: TextDirection.ltr,
+      children: [
+        Container(
+          color: Colors.green,
+          height: 100,
+          width: 100,
+        ),
+        Container(
+          color: Colors.yellow,
+          height: 100,
+          width: 100,
+        ),
+        Container(
+          color: Colors.red,
+          height: 100,
+          width: 100,
+        ),
+        Container(
+          color: Colors.blue,
+          height: 100,
+          width: 100,
+        ),
+      ],
     );
   }
 }
