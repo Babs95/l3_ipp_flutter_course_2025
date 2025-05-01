@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "365360853945",
+    "project_id": "l3-gi-ipp-app",
+    "storage_bucket": "l3-gi-ipp-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365360853945:android:5e363895a2ee80d65e7c68",
+        "android_client_info": {
+          "package_name": "sn.ipp.l3_ipp_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7ZZaqRWBagsbVcQLu3Gx-6-I8qHzgZq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
