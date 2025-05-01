@@ -27,40 +27,31 @@ class _LoginScreenState extends State<LoginScreen> {
     String? errorMessage = '';
 
     _signIn() async {
-      if(_formKey.currentState!.validate()){
-        setState(() {
-          isLoading = true;
-        });
-
-        try{
+      if (_formKey.currentState!.validate()) {
+        setState(() => isLoading = true);
+        try {
           await authentificationService.signInWithEmailAndPassword(
-              email: _emailController.text,
-              password: _passwordController.text
+            email: _emailController.text,
+            password: _passwordController.text,
           );
           setState(() {
             isLoading = false;
           });
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const Home(),
-            ),
+            MaterialPageRoute(builder: (context) => const Home()),
           );
 
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Vous êtes connecté !',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-                duration: Duration(seconds: 5),
-                backgroundColor: kSuccessColor,
-              )
+            SnackBar(
+              content: Text(
+                'Vous êtes connecté !',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+              backgroundColor: kSuccessColor,
+            ),
           );
-
-        } on FirebaseAuthException catch(ex) {
+        } on FirebaseAuthException catch (ex) {
           setState(() {
             isLoading = false;
             errorMessage = ex.message;
@@ -70,14 +61,11 @@ class _LoginScreenState extends State<LoginScreen> {
             SnackBar(
               content: Text(
                 errorMessage!,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               duration: Duration(seconds: 5),
               backgroundColor: kErrorColor,
-            )
+            ),
           );
         }
       }
@@ -165,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
 
                           if (value.length < 5) {
-                              return 'Le mot de passe doit contenir au moins 5 caractères';
+                            return 'Le mot de passe doit contenir au moins 5 caractères';
                           }
 
                           return null;
@@ -193,16 +181,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: SizeConfig.getProportionateScreenHeight(50),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: isLoading ? null : _signIn,
                     style: ElevatedButton.styleFrom(),
-                    child: Text(
-                      'Se connecter',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        //color: kWhiteColor
-                      ),
-                    ),
+                    child:
+                        isLoading
+                            ? SizedBox(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 5,
+                                valueColor: AlwaysStoppedAnimation(
+                                  kPrimaryColor,
+                                ),
+                              ),
+                            ) : Text(
+                              'Se connecter',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                //color: kWhiteColor
+                              ),
+                            ),
                   ),
                 ),
                 SizedBox(height: 20),

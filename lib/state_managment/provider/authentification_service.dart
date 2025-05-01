@@ -22,4 +22,8 @@ class AuthentificationService with ChangeNotifier {
   }) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
 }
