@@ -83,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
-    //SizeConfig.init(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -92,10 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 50),
                 Center(
                   child: Container(
-                    width: SizeConfig.getProportionateScreenHeight(150),
-                    height: SizeConfig.getProportionateScreenHeight(150),
+                    width: 120,
+                    height: 120,
                     decoration: BoxDecoration(
                       color: kPrimaryColor.withAlpha(100),
                       shape: BoxShape.circle,
