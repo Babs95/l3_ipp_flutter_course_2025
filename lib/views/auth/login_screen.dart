@@ -1,10 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:l3_ipp_app/common/constants_color.dart';
+import 'package:l3_ipp_app/components/navigation_wrapper.dart';
+import 'package:l3_ipp_app/models/my_user_model.dart';
 import 'package:l3_ipp_app/state_managment/provider/authentification_service.dart';
 import 'package:l3_ipp_app/views/auth/signup_screen.dart';
-
+import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import '../../common/size_config.dart';
+import '../../services/users_service.dart';
+import '../../state_managment/getx/navigation_controller.dart';
 import '../home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final _passwordController = TextEditingController();
     final AuthentificationService authentificationService =
         AuthentificationService();
+    final userService = UserService();
+    final NavigationController controller = Get.put(NavigationController());
 
     bool isLoading = false;
     String? errorMessage = '';
@@ -34,11 +41,18 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _emailController.text,
             password: _passwordController.text,
           );
+
+          MyUserModel? user = await userService.fetchUserById(
+              authentificationService.user!.uid
+          );
+          Provider.of<AuthentificationService>(context, listen: false).setMyUser(user);
+
           setState(() {
             isLoading = false;
           });
+          controller.changePage(0);
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => NavigationWrapper()),
           );
 
           ScaffoldMessenger.of(context).showSnackBar(

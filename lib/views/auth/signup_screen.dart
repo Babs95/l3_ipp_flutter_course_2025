@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:l3_ipp_app/models/my_user_model.dart';
+import 'package:l3_ipp_app/services/users_service.dart';
+import 'package:l3_ipp_app/state_managment/provider/authentification_service.dart';
 
 import '../../common/constants_color.dart';
 import '../../common/size_config.dart';
@@ -14,6 +18,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nomController = TextEditingController();
+  final _prenomController = TextEditingController();
+  final authentificationService = AuthentificationService();
+  final userService = UserService();
+
+  bool isLoading = false;
+  String? errorMessage = '';
+
+  _signUp() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => isLoading = true);
+      try {
+        //Création user dans firebaseAuth
+        await authentificationService.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Sauvegarder sur la base FireStore
+        MyUserModel userModel = MyUserModel(
+            uuid: authentificationService.user!.uid,
+            email: _emailController.text,
+            nom: _nomController.text,
+            prenom: _prenomController.text
+        );
+
+        await userService.createUser(userModel);
+
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.of(context).pop();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Inscription réussi !',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(seconds: 5),
+            backgroundColor: kSuccessColor,
+          ),
+        );
+      } on FirebaseAuthException catch (ex) {
+        setState(() {
+          isLoading = false;
+          errorMessage = ex.message;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              errorMessage!,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(seconds: 5),
+            backgroundColor: kErrorColor,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +128,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _nomController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          label: Text('Nom'),
+                          hintText: "Entrez votre nom",
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0)
+                          ),
+                          //floatingLabelBehavior: FloatingLabelBehavior.always
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      TextFormField(
+                        controller: _prenomController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          label: Text('Prénom'),
+                          hintText: "Entrez votre prénom",
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16.0)
+                          ),
+                          //floatingLabelBehavior: FloatingLabelBehavior.always
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -94,9 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: double.infinity,
                   height: SizeConfig.getProportionateScreenHeight(50),
                   child: ElevatedButton(
-                      onPressed:() {
-          
-                      },
+                      onPressed:_signUp,
                       style: ElevatedButton.styleFrom(
           
                       ),

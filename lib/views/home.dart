@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Bienvenue ${model.user?.email ?? ''}',
+                  'Bienvenue ${model.myUserModel?.prenom ?? ''} ${model.myUserModel?.nom ?? ''}',
                   style: TextStyle(
                       fontSize: 25,
                     fontWeight: FontWeight.bold
@@ -102,7 +102,9 @@ class _HomeState extends State<Home> {
                     width: double.infinity,
                     height: SizeConfig.getProportionateScreenHeight(50),
                     child: ElevatedButton(
-                        onPressed: model.signOut,
+                        onPressed: () {
+                          model.signOut(context);
+                        },
                         style: ElevatedButton.styleFrom(
 
                         ),
@@ -119,30 +121,6 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          selectedItemColor: Colors.orange,
-          unselectedItemColor: Colors.grey,
-          iconSize: 30,
-          onTap: (index) {
-            switch(index) {
-              case 0:
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              case 1:
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-            }
-          },
-          items: [
-            BottomNavigationBarItem(label: 'Accueil', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: 'Profil', icon: Icon(Icons.person)),
-            BottomNavigationBarItem(label: 'Paramètres', icon: Icon(Icons.settings))
-          ],
         ),
       );
     });

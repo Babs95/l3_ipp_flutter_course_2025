@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:l3_ipp_app/common/constants_assets.dart';
+import 'package:l3_ipp_app/components/navigation_wrapper.dart';
 
 import '../common/size_config.dart';
 import 'home.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   
   navigate(){
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const Home()),
+      MaterialPageRoute(builder: (context) => NavigationWrapper()),
     );
   }
   
